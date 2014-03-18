@@ -1,2 +1,74 @@
 Project
 =======
+
+Getting started:
+ - Fork this repo on Github. When you make a commit, please include which
+   problem(s) that you were working on in the commit message. (See more info below.)
+
+ - I highly reccommend running all this from a \*nix terminal.
+   If you don't have one currently set up, you can create an Ubuntu instance using Virtual Box.
+
+ - Install the requirements for the project. They're all found in requirements.txt.
+   See pip.
+
+ - Use python2.7
+
+ - The sqlite3 db comes preloaded with some data, you might want to look at it and the models
+   before you get started.
+
+ - A little bit about the files and dirs in this project:
+   - runserver.py will start the Flask server
+   - shell.py is a terminal with all the accounting instances already imported
+   - accounting.models contains the SQLAlchemy database models
+   - accounting.views is the view for the Flask server
+   - accounting.tools contains the PolicyAccounting class
+
+ - Questions?
+   Feel free to ask! Send an email to watchmen@britecore.com
+
+
+The Problems:
+(remember to put which problem(s) you're working on in your commit message!)
+
+ 1. Policy Three (effective 1/1/2015) is on a monthly billing schedule,
+    the developers haven't gotten around to implementing monthly invoices,
+    so please go ahead and do that now so that Policy Three can have some invoices.
+
+ 2. Now that you've written monthly invoices, you should probably write a unit test for it.
+
+ 3. Oh no, one of the unit tests are failing! Figure out what caused this and fix it.
+
+ 4. Geez, whoever wrote PolicyAccounting sure didn't like making comments. Would you add
+    some comments to the code and functions? You could even add some logging if you'd like.
+
+ 5. Mary Sue Client tried to do DATA PROBLEM. She suspects bad data. Please look into this for her.
+
+ 6. Try/except/pass
+
+ 7. Did you notice that an invoice's cancel date is two weeks after the due date? These two
+    weeks, the policy's status is cancellation pending due to non-pay.
+
+ 8. You know what'd be great? Being able to change the billing schedule in the middle of a policy.
+    For example, Policy Two is on quarterly and the insured (Anna White) has already paid off the
+    first invoice. Making a payment for $400 was kind of a stretch for her, so in the future she'd
+    like to have monthly invoices. Please mark those old quarterly invoices as deleted and switch
+    her to monthly.
+
+ 9. Mary Sue Client doesn't like the way that cancelling a policy works. It doesn't do
+    anything other than print to the screen! She thinks that maybe the Policy's status
+    should change, and maybe even store the date that it canceled. It might also be nice to
+    be able to store a description about why the policy cancelled. Well, really maybe she'd
+    also like to be able to cancel policies for other reasons, like underwriting. Decide how
+    to expand the cancellation logic and test it.
+
+ 10. Mary Sue Client doesn't really like using the shell when she wants to
+     look at policies and their invoices. Will you build her a view where she
+     could look at it online? She wants to be able to enter a policy number
+     and a date and be able to see the account balance and invoices (even the paid ones).
+     There's already a Flask server, but if there's something that you'd rather use
+     go ahead. Also, she wouldn't mind looking at a pretty display, but she'd rather
+     it be more functional than pretty. If you can think of anything else that
+     Mary Sue Client might find useful on the interface, feel free to add it.
+
+ Bonus: If there's anything else bothering you about the code, go ahead and feel free to
+ change it. Be sure to put "Bonus" in the commit message please. :)

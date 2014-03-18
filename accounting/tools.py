@@ -23,7 +23,6 @@ class PolicyAccounting(object):
         self.policy = Policy.query.filter_by(id=policy_id).one()
 
         if not self.policy.invoices:
-            #Make some invoices so I stop forgetting
             self.make_invoices()
 
     def return_account_balance(self, date_cursor=None):
@@ -77,11 +76,6 @@ class PolicyAccounting(object):
 
 
     def make_invoices(self):
-        """
-         This creates the invoices for whichever policy
-         this PolicyAccounting instance is looking at.
-         If invoices currently exist, it deletes them.
-        """
         for invoice in self.policy.invoices:
             invoice.delete()
 
@@ -107,7 +101,6 @@ class PolicyAccounting(object):
                                   self.policy.annual_premium * 0.25)
                 invoices.append(invoice)
         elif self.policy.billing_schedule == "Monthly":
-            #Maybe make them implement monthly?
             pass
         else:
             print "You have chosen a bad billing schedule."
