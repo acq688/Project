@@ -24,7 +24,7 @@ Getting started:
    - accounting.tools contains the PolicyAccounting class
 
  - Questions?
-   Feel free to ask! Send an email to watchmen@britecore.com
+   Feel free to ask! Send an email to amanda@britecore.com
 
 
 The Problems:
@@ -41,12 +41,24 @@ The Problems:
  4. Geez, whoever wrote PolicyAccounting sure didn't like making comments. Would you add
     some comments to the code and functions? You could even add some logging if you'd like.
 
- 5. Mary Sue Client tried to do DATA PROBLEM. She suspects bad data. Please look into this for her.
+ 5. Mary Sue Client is having problems creating a new policy, she says something doesn't
+    look right with the invoices when she tries. Will you help her?
+    The info is below:
+        - Policy Number: 'Policy Four'
+        - Effective: 2/1/2015
+        - Billing Schedule: 'Two-Pay'
+        - Named Insured: 'Ryan Bucket'
+        - Agent: 'John Doe'
+        - Annual Premium: $500
 
- 6. Try/except/pass
+ 6. The agent Bob Smith called Mary Sue Client furious because his insured, John Doe, couldn't
+    pay off Policy One! Please help her out!
 
- 7. Did you notice that an invoice's cancel date is two weeks after the due date? These two
-    weeks, the policy's status is cancellation pending due to non-pay.
+ 7. Did you notice that an invoice's cancel date is two weeks after the due date? For these two
+    weeks, the policy's status is cancellation pending due to non-pay, but the system doesn't
+    account for this in any way. If a policy is in cancellation pending due to non_pay, only an
+    agent should be able to make a payment on it. There is a code stub for
+    evaluate_cancellation_pending_due_to_non_pay get you started.
 
  8. You know what'd be great? Being able to change the billing schedule in the middle of a policy.
     For example, Policy Two is on quarterly and the insured (Anna White) has already paid off the

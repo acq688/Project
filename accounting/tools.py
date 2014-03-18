@@ -46,15 +46,31 @@ class PolicyAccounting(object):
 
         return due_now
 
-    def make_payment(self, date_cursor=None, amount=0):
+    def make_payment(self, contact_id=None, date_cursor=None, amount=0):
         if not date_cursor:
             date_cursor = datetime.now().date()
 
+        if not contact_id:
+            try:
+                contact_id = self.policy.named_insured
+            except:
+                pass
+
         payment = Payment(self.policy.id,
+                          contact_id,
                           amount,
                           date_cursor)
         db.session.add(payment)
         db.session.commit()
+
+    def evaluate_cancellation_pending_due_to_non_pay(self, date_cursor=None):
+        """
+         If this function returns true, an invoice
+         on a policy has passed the due date without
+         being paid in full. However, it has not necessarily
+         made it to the cancel_date yet.
+        """
+        pass
 
     def evaluate_cancel(self, date_cursor=None):
         if not date_cursor:
@@ -79,6 +95,8 @@ class PolicyAccounting(object):
         for invoice in self.policy.invoices:
             invoice.delete()
 
+        billing_schedules = ['Annual': None, 'Semi-Annual': 3, 'Quarterly': 4, 'Monthly': 12]
+
         invoices = []
         first_invoice = Invoice(self.policy.id,
                                 self.policy.effective_date, #bill_date
@@ -89,16 +107,27 @@ class PolicyAccounting(object):
 
         if self.policy.billing_schedule == "Annual":
             pass
-        elif self.policy.billing_schedule == "Quarterly":
-            first_invoice.amount_due = first_invoice.amount_due * 0.25
-            for i in range(1, 4):
-                months_after_eff_date = i*3
-                due_date = self.policy.effective_date + relativedelta(months=months_after_eff_date)
+        elif self.policy.billing_schedule == "Two-Pay":
+            first_invoice.amount_due = first_invoice.amount_due / billing_schedules.get(self.policy.billing_schedule)
+            for i in range(1, billing_schedules.get(self.policy.billing_schedules)):
+                months_after_eff_date = i*6
+                bill_date = self.policy.effective_date + relativedelta(months=months_after_eff_date)
                 invoice = Invoice(self.policy.id,
-                                  due_date,
-                                  due_date + relativedelta(months=1),
-                                  due_date + relativedelta(months=1, days=14),
-                                  self.policy.annual_premium * 0.25)
+                                  bill_date,
+                                  bill_date + relativedelta(months=1),
+                                  bill_date + relativedelta(months=1, days=14),
+                                  self.policy.annual_premium / billing_schedules.get(self.policy.billing_schedule))
+                invoices.append(invoice)
+        elif self.policy.billing_schedule == "Quarterly":
+            first_invoice.amount_due = first_invoice.amount_due / billing_schedules.get(self.policy.billing_schedule)
+            for i in range(1, billing_schedules.get(self.policy.billing_schedules)):
+                months_after_eff_date = i*3
+                bill_date = self.policy.effective_date + relativedelta(months=months_after_eff_date)
+                invoice = Invoice(self.policy.id,
+                                  bill_date,
+                                  bill_date + relativedelta(months=1),
+                                  bill_date + relativedelta(months=1, days=14),
+                                  self.policy.annual_premium / billing_schedules.get(self.policy.billing_schedule))
                 invoices.append(invoice)
         elif self.policy.billing_schedule == "Monthly":
             pass
@@ -133,7 +162,6 @@ def insert_data():
     policies = []
     p1 = Policy('Policy One', date(2015, 1, 1), 365)
     p1.billing_schedule = 'Annual'
-    p1.named_insured = john_doe_insured.id
     p1.agent = bob_smith.id
     policies.append(p1)
 
@@ -153,7 +181,7 @@ def insert_data():
         db.session.add(policy)
     db.session.commit()
 
-    payment_for_p2 = Payment(p2.id, 400, date(2015, 2, 1))
+    payment_for_p2 = Payment(p2.id, anna_white.id, 400, date(2015, 2, 1))
     db.session.add(payment_for_p2)
     db.session.commit()
 
