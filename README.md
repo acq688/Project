@@ -1,7 +1,9 @@
-Project
-=======
+SupportOps Software Engineering Intern Project
+=====
 
 Getting started:
+-----
+
  - Fork this repo on Github. When you make a commit, please include which
    problem(s) that you were working on in the commit message. (See more info below.)
 
@@ -13,8 +15,7 @@ Getting started:
 
  - Use python2.7
 
- - The sqlite3 db comes preloaded with some data, you might want to look at it and the models
-   before you get started.
+ - We're just using a sqlite3 db for this project. Run ```build_or_refresh_db()``` to populate it with the initial data. You might want to take a look at this data and the models before you get started. I personally use a SQLite Manager Add-On for Firefox to view the db, but you can use whatever.
 
  - A little bit about the files and dirs in this project:
    - runserver.py will start the Flask server
@@ -25,11 +26,41 @@ Getting started:
    - accounting.tests contains the unit tests for PolicyAccounting
 
  - Questions?
-   Feel free to ask! Send an email to amanda@britecore.com
+   Feel free to ask! 
+   Send an email to amanda@britecore.com
+
+
+Requirements:
+-----
+- Flask 0.9
+- SQLAlchemy 0.7.9
+- Flask-SQLAlchemy 0.16
+- python-dateutil 1.5
+- nose 1.1.2
+
+
+Helpful Links:
+-----
+* [Flask SQLAlchemy Plugin](http://pythonhosted.org/Flask-SQLAlchemy/)
+* [SQLite Firefox Plugin](https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/)
+* [SQLAlchemy Declarative Base](http://docs.sqlalchemy.org/en/rel_0_8/orm/extensions/declarative.html)
+* [A List of Responsive Frameworks for HTML](http://komelin.com/en/5tips/5-most-popular-html5-responsive-frameworks)
+* [Testing Flask](http://flask.pocoo.org/docs/testing/)
+* [jQuery API](http://api.jquery.com/)
+* [pip](https://pypi.python.org/pypi/pip)
+* [PEP-8 Auto Checker](https://pypi.python.org/pypi/pep8)
+* [PyFlakes](https://pypi.python.org/pypi/pyflakes)
+* [JS Hint](http://www.jshint.com/)
+
+And some good things to know about writing Python:
+* [PEP-8, a Style guide for Python](http://www.python.org/dev/peps/pep-0008/)
 
 
 The Problems:
+=====
 (remember to put which problem(s) you're working on in your commit message!)
+
+**NOTE: Populate your database. Run the following function in the shell: ```build_or_refresh_db()``` Any time you think that your db is getting messed up, you can run this again to start from fresh.**
 
  1. Policy Three (effective 1/1/2015) is on a monthly billing schedule,
     the developers haven't gotten around to implementing monthly invoices,
@@ -46,6 +77,7 @@ The Problems:
  5. Mary Sue Client is having problems creating a new policy, she says something doesn't
     look right with the invoices when she tries. Will you help her?
     The info is below:
+
         - Policy Number: 'Policy Four'
         - Effective: 2/1/2015
         - Billing Schedule: 'Two-Pay'
