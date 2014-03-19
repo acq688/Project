@@ -11,7 +11,7 @@ from models import Contact, Invoice, Payment, Policy
 This is the base code for the intern project.
 
 If you have any questions, please contact Amanda at:
-    watchmen@britecore.com
+    amanda@britecore.com
 #######################################################
 """
 
@@ -29,9 +29,8 @@ class PolicyAccounting(object):
         if not date_cursor:
             date_cursor = datetime.now().date()
 
-        #Put in a problem with date here for a unit test
         invoices = Invoice.query.filter_by(policy_id=self.policy.id)\
-                                .filter(Invoice.bill_date <= date_cursor)\
+                                .filter(Invoice.bill_date < date_cursor)\
                                 .order_by(Invoice.bill_date)\
                                 .all()
         due_now = 0
@@ -39,7 +38,7 @@ class PolicyAccounting(object):
             due_now += invoice.amount_due
 
         payments = Payment.query.filter_by(policy_id=self.policy.id)\
-                                .filter(Payment.transaction_date <= date_cursor)\
+                                .filter(Payment.transaction_date < date_cursor)\
                                 .all()
         for payment in payments:
             due_now -= payment.amount_paid
@@ -62,6 +61,8 @@ class PolicyAccounting(object):
                           date_cursor)
         db.session.add(payment)
         db.session.commit()
+
+        return payment
 
     def evaluate_cancellation_pending_due_to_non_pay(self, date_cursor=None):
         """
@@ -95,7 +96,7 @@ class PolicyAccounting(object):
         for invoice in self.policy.invoices:
             invoice.delete()
 
-        billing_schedules = ['Annual': None, 'Semi-Annual': 3, 'Quarterly': 4, 'Monthly': 12]
+        billing_schedules = {'Annual': None, 'Semi-Annual': 3, 'Quarterly': 4, 'Monthly': 12}
 
         invoices = []
         first_invoice = Invoice(self.policy.id,
@@ -109,7 +110,7 @@ class PolicyAccounting(object):
             pass
         elif self.policy.billing_schedule == "Two-Pay":
             first_invoice.amount_due = first_invoice.amount_due / billing_schedules.get(self.policy.billing_schedule)
-            for i in range(1, billing_schedules.get(self.policy.billing_schedules)):
+            for i in range(1, billing_schedules.get(self.policy.billing_schedule)):
                 months_after_eff_date = i*6
                 bill_date = self.policy.effective_date + relativedelta(months=months_after_eff_date)
                 invoice = Invoice(self.policy.id,
@@ -120,7 +121,7 @@ class PolicyAccounting(object):
                 invoices.append(invoice)
         elif self.policy.billing_schedule == "Quarterly":
             first_invoice.amount_due = first_invoice.amount_due / billing_schedules.get(self.policy.billing_schedule)
-            for i in range(1, billing_schedules.get(self.policy.billing_schedules)):
+            for i in range(1, billing_schedules.get(self.policy.billing_schedule)):
                 months_after_eff_date = i*3
                 bill_date = self.policy.effective_date + relativedelta(months=months_after_eff_date)
                 invoice = Invoice(self.policy.id,

@@ -22,6 +22,7 @@ Getting started:
    - accounting.models contains the SQLAlchemy database models
    - accounting.views is the view for the Flask server
    - accounting.tools contains the PolicyAccounting class
+   - accounting.tests contains the unit tests for PolicyAccounting
 
  - Questions?
    Feel free to ask! Send an email to amanda@britecore.com
@@ -35,8 +36,9 @@ The Problems:
     so please go ahead and do that now so that Policy Three can have some invoices.
 
  2. Now that you've written monthly invoices, you should probably write a unit test for it.
+    I recommend using nosetests for this.
 
- 3. Oh no, one of the unit tests are failing! Figure out what caused this and fix it.
+ 3. Oh no, one of the test suites is completely failing! Figure out what caused this and fix it.
 
  4. Geez, whoever wrote PolicyAccounting sure didn't like making comments. Would you add
     some comments to the code and functions? You could even add some logging if you'd like.
